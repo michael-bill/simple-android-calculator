@@ -123,11 +123,11 @@
             android:text="." />
 
         <Button
-            android:id="@+id/buttonResult"
+            android:id="@+id/buttonPlusMinus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:text="=" />
+            android:text="+/-" />
 
         <Button
             android:id="@+id/buttonDivide"
@@ -149,6 +149,21 @@
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:text="Clear" />
+
+
+        <Button
+            android:id="@+id/buttonCopy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:text="Copy" />
+
+        <Button
+            android:id="@+id/buttonResult"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:text="=" />
 
     </GridLayout>
 

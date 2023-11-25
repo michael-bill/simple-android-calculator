@@ -2,9 +2,12 @@ package com.example.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,12 +37,23 @@ public class MainActivity extends AppCompatActivity {
             button.setOnClickListener(view -> onClickOperationButton(button));
         }
         resultEditText = findViewById(R.id.resultEditText);
+        Button buttonDot = findViewById(R.id.buttonDot);
+        buttonDot.setOnClickListener(view -> onClickDotButton(buttonDot));
         Button buttonResult = findViewById(R.id.buttonResult);
         buttonResult.setOnClickListener(view -> onClickResultButton(buttonResult));
         Button buttonClear = findViewById(R.id.buttonClear);
         buttonClear.setOnClickListener(view -> onClickClearButton(buttonClear));
         Button buttonClearOne = findViewById(R.id.buttonClearOne);
         buttonClearOne.setOnClickListener(view -> onClickClearOneButton(buttonClearOne));
+        Button buttonPlusMinus = findViewById(R.id.buttonPlusMinus);
+        buttonPlusMinus.setOnClickListener(view -> onClickPlusMinusButton(buttonPlusMinus));
+        Button buttonCopy = findViewById(R.id.buttonCopy);
+        buttonCopy.setOnClickListener(view -> {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("text", resultEditText.getText());
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(getApplicationContext(), "Result copied to clipboard", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void onClickDigitButton(Button button) {
@@ -52,11 +66,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void onClickDotButton(Button button) {
+        if (operation.equals("") && !firstArgument.equals("") && countCharString(firstArgument, '.') < 1) {
+            firstArgument += button.getText();
+            resultEditText.setText(firstArgument);
+        } else if (!secondArgument.equals("") && countCharString(secondArgument, '.') < 1) {
+            secondArgument += button.getText();
+            resultEditText.setText(secondArgument);
+        }
+    }
+
     private void onClickOperationButton(Button button) {
         operation = button.getText().toString();
     }
 
+    private void onClickPlusMinusButton(Button button) {
+        if (operation.equals("") && !firstArgument.equals("")) {
+            if (firstArgument.charAt(0) == '-') {
+                firstArgument = firstArgument.substring(1);
+            } else {
+                firstArgument = "-" + firstArgument;
+            }
+            resultEditText.setText(firstArgument);
+        } else if (!secondArgument.equals("")) {
+            if (secondArgument.charAt(0) == '-') {
+                secondArgument = secondArgument.substring(1);
+            } else {
+                secondArgument = "-" + secondArgument;
+            }
+            resultEditText.setText(secondArgument);
+            resultEditText.setText(secondArgument);
+        }
+    }
+
     private void onClickResultButton(Button button) {
+        if (firstArgument.equals("") || secondArgument.equals("") || operation.equals("")) return;
         double result = 0;
         switch (operation) {
             case "+":
@@ -92,5 +136,13 @@ public class MainActivity extends AppCompatActivity {
             secondArgument = secondArgument.substring(0, secondArgument.length() - 1);
             resultEditText.setText(secondArgument);
         }
+    }
+
+    private int countCharString(String str, char c) {
+        int count = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == c) count++;
+        }
+        return count;
     }
 }
