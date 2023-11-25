@@ -77,6 +77,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onClickOperationButton(Button button) {
+        if (firstArgument.length() > 0 && secondArgument.length() > 0 && operation.length() > 0) {
+            double result = getResult();
+            firstArgument = String.valueOf(result);
+            secondArgument = "";
+            resultEditText.setText(firstArgument);
+        }
         operation = button.getText().toString();
     }
 
@@ -101,24 +107,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void onClickResultButton(Button button) {
         if (firstArgument.equals("") || secondArgument.equals("") || operation.equals("")) return;
+        double result = getResult();
+        firstArgument = String.valueOf(result);
+        secondArgument = "";
+        operation = "";
+        resultEditText.setText(firstArgument);
+    }
+
+    private double getResult() {
         double result = 0;
         switch (operation) {
             case "+":
-                result = Double.parseDouble(firstArgument) + Double.parseDouble(secondArgument);
-                break;
+                return Double.parseDouble(firstArgument) + Double.parseDouble(secondArgument);
             case "-":
-                result = Double.parseDouble(firstArgument) - Double.parseDouble(secondArgument);
-                break;
+                return Double.parseDouble(firstArgument) - Double.parseDouble(secondArgument);
             case "*":
-                result = Double.parseDouble(firstArgument) * Double.parseDouble(secondArgument);
-                break;
+                return Double.parseDouble(firstArgument) * Double.parseDouble(secondArgument);
             case "/":
-                result = Double.parseDouble(firstArgument) / Double.parseDouble(secondArgument);
-                break;
-            default: return;
+                return Double.parseDouble(firstArgument) / Double.parseDouble(secondArgument);
+            default: return result;
         }
-        firstArgument = String.valueOf(result);
-        resultEditText.setText(firstArgument);
     }
 
     private void onClickClearButton(Button button) {
